@@ -58,5 +58,5 @@ var num = Gamepad.numDevices();
 console.log("numDevices", num);
 
 setInterval(Gamepad.processEvents, 16);
-setInterval(gamepad.detectDevices, 500);
+setInterval(Gamepad.detectDevices, 500);
 
