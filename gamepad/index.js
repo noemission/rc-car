@@ -1,4 +1,5 @@
-var Gamepad = require("gamepad");
+const shell = require('shelljs');
+const Gamepad = require("gamepad");
 const throttle = require('lodash.throttle');
 const { Sender } = require('../lib/NRF24L01/index.js')
 
@@ -52,6 +53,7 @@ Gamepad.on("up", function (id, num) {
     }
     if(shutdownSequence.join() === '0,0,2,2'){
         console.log('Shutdown sequence detected.')
+	shell.exec('/sbin/shutdown -h now');
     }
     console.log(shutdownSequence)
 });
