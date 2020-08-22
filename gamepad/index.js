@@ -36,6 +36,7 @@ Gamepad.on("up", function (id, num) {
         num: num,
     });
     shutdownSequence.push(num)
+    shutdownSequence.splice(0, shutdownSequence.length - 4)
     if (id === 0 && num === 3) {
         send('L')
     }
@@ -52,7 +53,6 @@ Gamepad.on("up", function (id, num) {
     if(shutdownSequence.join() === '0,0,2,2'){
         console.log('Shutdown sequence detected.')
     }
-    shutdownSequence.splice(0, shutdownSequence.length - 4)
     console.log(shutdownSequence)
 });
 
