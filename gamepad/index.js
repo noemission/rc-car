@@ -2,7 +2,8 @@ var Gamepad = require("gamepad");
 const throttle = require('lodash.throttle');
 const { Sender } = require('../lib/NRF24L01/index.js')
 
-const { send } = new Sender();
+const sender = new Sender();
+const send = sender.send;
 
 let speedFactor = 0.2;
 
