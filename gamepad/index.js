@@ -3,7 +3,7 @@ const throttle = require('lodash.throttle');
 const { Sender } = require('../lib/NRF24L01/index.js')
 
 const sender = new Sender();
-const send = sender.send;
+const send = sender.send.bind(sender);
 
 let speedFactor = 0.2;
 
@@ -53,6 +53,7 @@ Gamepad.on("up", function (id, num) {
         console.log('Shutdown sequence detected.')
     }
     shutdownSequence.splice(0, shutdownSequence.length - 4)
+    console.log(shutdownSequence)
 });
 
 Gamepad.on('attach',(...device) => {
