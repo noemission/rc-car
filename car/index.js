@@ -1,4 +1,4 @@
-const server = require('http').createServer();
+const shell = require('shelljs');
 const Gpio = require('pigpio').Gpio;
 const { Receiver } = require('../lib/NRF24L01/index.js')
 
@@ -75,6 +75,9 @@ const setThrottle = (throttle) => {
 }
 receiver.onMessage((msg) => {
     console.log(msg)
+    if(msg === "SHUTDOWN"){
+        return shell.exec('/sbin/shutdown -h now');
+    }
     let axis = msg.charAt(0);
     let value = parseFloat(msg.slice(1))
     if (axis === 'X') {

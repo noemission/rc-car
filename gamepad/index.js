@@ -53,7 +53,10 @@ Gamepad.on("up", function (id, num) {
     }
     if(shutdownSequence.join() === '0,0,2,2'){
         console.log('Shutdown sequence detected.')
-	shell.exec('/sbin/shutdown -h now');
+        send("SHUTDOWN")
+        setTimeout(() => {
+            shell.exec('/sbin/shutdown -h now');
+        }, 2000);
     }
     console.log(shutdownSequence)
 });
