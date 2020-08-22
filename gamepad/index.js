@@ -27,12 +27,14 @@ Gamepad.on("move", function (id, axis, value) {
         throttledHandleMovement(value)
     }
 });
+let shutdownSequence = []
 
 Gamepad.on("up", function (id, num) {
     console.log("up", {
         id: id,
         num: num,
     });
+    shutdownSequence.push(num)
     if (id === 0 && num === 3) {
         send('L')
     }
@@ -46,6 +48,10 @@ Gamepad.on("up", function (id, num) {
         }
         console.log(speedFactor)
     }
+    if(shutdownSequence.join() === '0,0,2,2'){
+        console.log('Shutdown sequence detected.')
+    }
+    shutdownSequence.splice(0, shutdownSequence.length - 4)
 });
 
 Gamepad.on('attach',(...device) => {
