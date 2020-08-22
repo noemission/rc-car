@@ -1,35 +1,22 @@
 var Gamepad = require("gamepad");
-const io = require('socket.io-client');
 const throttle = require('lodash.throttle');
-const send = require('../NRF24L01/index.js')
-// const open = require('open');
+const { Sender } = require('../lib/NRF24L01/index.js')
 
-const CAR_IP = '192.168.4.1'
+const { send } = new Sender();
+
 let speedFactor = 0.2;
-
-const socket = io(`http://${CAR_IP}:3000`);
-
-console.log("Gamepad", Gamepad);
-
-socket.on('connect', () => {
-    console.log('socket connected');
-    // open(`http://${CAR_IP}:1338/np2/`);
-});
 
 const handleMovement = (value) => {
     console.log('Y_AXIS', value)
-    //socket.emit('Y_AXIS', value);
-    send('Y' + value )
+    send('Y' + value)
 }
 var throttledHandleMovement = throttle(handleMovement, 16 * 3);
 
 const handleSteering = (value) => {
     console.log('X_AXIS', value)
-    // socket.emit('X_AXIS', value);
-    send('X' + value )
+    send('X' + value)
 }
 var throttledHandleSteering = throttle(handleSteering, 16 * 3);
-
 
 Gamepad.on("move", function (id, axis, value) {
     if (axis === 0) {
@@ -41,7 +28,6 @@ Gamepad.on("move", function (id, axis, value) {
     }
 });
 
-// Listen for button up events on all Gamepads
 Gamepad.on("up", function (id, num) {
     console.log("up", {
         id: id,
@@ -62,11 +48,15 @@ Gamepad.on("up", function (id, num) {
     }
 });
 
-console.log("init");
+Gamepad.on('attach',(...device) => {
+    console.log('attach',device)
+})
+
 Gamepad.init()
 
 var num = Gamepad.numDevices();
 console.log("numDevices", num);
 
 setInterval(Gamepad.processEvents, 16);
+setInterval(gamepad.detectDevices, 500);
 
