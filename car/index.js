@@ -41,7 +41,7 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 handleLights();
 let beepInterval;
-
+let beeping = false;
 motor.servoWrite(1500)
 servo.servoWrite(1500)
 
@@ -58,9 +58,13 @@ const beep = () => {
     runTheMotor(1550, 70, 1500)
 }
 const startBeep = () => {
+    beeping = true;
     beepInterval = setInterval(beep, 750)
 }
-const stopBeep = () => clearInterval(beepInterval);
+const stopBeep = () => {
+    beeping = false;
+    clearInterval(beepInterval);
+}
 
 let lastHeartBeat;
 const handleHeartBeat = () => {
@@ -68,10 +72,10 @@ const handleHeartBeat = () => {
     stopBeep();
 }
 setInterval(() => {
-    if(Date.now() - lastHeartBeat > 3000){
+    if(Date.now() - lastHeartBeat > 5000 && !beeping){
         startBeep();
     }
-},3000)
+},5000)
 
 const setThrottle = (throttle) => {
     if (throttle > maxThrottle) {
