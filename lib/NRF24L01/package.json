@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "asciichart": "^1.5.25",
     "python-shell": "^2.0.1"
   }
 }
