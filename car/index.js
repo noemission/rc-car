@@ -58,6 +58,7 @@ const beep = () => {
     runTheMotor(1550, 70, 1500)
 }
 const startBeep = () => {
+    if(beeping) return;
     beeping = true;
     beepInterval = setInterval(beep, 750)
 }
@@ -72,7 +73,7 @@ const handleHeartBeat = () => {
     stopBeep();
 }
 setInterval(() => {
-    if(Date.now() - lastHeartBeat > 5000 && !beeping){
+    if(Date.now() - lastHeartBeat > 5000 &&){
         startBeep();
     }
 },5000)
