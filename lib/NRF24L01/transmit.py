@@ -28,7 +28,7 @@ while(1):
     radio.stopListening()
     data = input().split('-')
     id = data[0]
-    message = list(data)
+    message = list(data[1])
     radio.write(message)
 
     if radio.isAckPayloadAvailable():
