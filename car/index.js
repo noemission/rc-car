@@ -73,7 +73,7 @@ const handleHeartBeat = () => {
     stopBeep();
 }
 setInterval(() => {
-    if(Date.now() - lastHeartBeat > 5000)
+    if(Date.now() - lastHeartBeat > 5000){
         startBeep();
     }
 },5000)
