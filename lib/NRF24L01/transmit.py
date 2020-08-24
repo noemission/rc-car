@@ -44,16 +44,8 @@ while(1):
 
         # Describe the results
     if timeout:
-        print('failed, response timed out.')
+        print (id + "-0")
     else:
-        # Grab the response, compare, and send to debugging spew
-        len = radio.getDynamicPayloadSize()
-        print(len)
-        receivedMessage = []
-        radio.read(receivedMessage, radio.getDynamicPayloadSize())
-
-        message = map(lambda c: chr(c), receivedMessage)
-        # Spew it
-        print(''.join(message))
+        print (id + "-1")
     #print("We sent the message of {}".format(message))
     #time.sleep(1)
