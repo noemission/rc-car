@@ -66,12 +66,12 @@ let lastHeartBeat;
 const handleHeartBeat = () => {
     lastHeartBeat = Date.now();
     stopBeep();
-    setTimeout(() => {
-        if(Date.now() - lastHeartBeat > 3000){
-            startBeep();
-        }
-    },3000)
 }
+setInterval(() => {
+    if(Date.now() - lastHeartBeat > 3000){
+        startBeep();
+    }
+},3000)
 
 const setThrottle = (throttle) => {
     if (throttle > maxThrottle) {
