@@ -38,10 +38,10 @@ Gamepad.on("up", function (id, num) {
     });
     shutdownSequence.push(num)
     shutdownSequence.splice(0, shutdownSequence.length - 4)
-    if (id === 0 && num === 3) {
+    if (num === 3) {
         send('L')
     }
-    if (id === 0 && num === 8) {
+    if (num === 8) {
         if (speedFactor === 0.2) {
             speedFactor = 0.6
         } else if (speedFactor === 0.6) {

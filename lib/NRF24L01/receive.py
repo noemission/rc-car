@@ -19,12 +19,13 @@ radio.enableDynamicPayloads()
 radio.enableAckPayload()
 
 radio.openReadingPipe(0, pipes[1])
+radio.openWritingPipe(pipes[0])
+
 #radio.printDetails()
 
 radio.startListening()
 
 while(1):
-    ackPL = [1]
     while not radio.available(0):
         time.sleep(1 / 100)
     receivedMessage = []
@@ -36,4 +37,4 @@ while(1):
         if (n >= 32 and n <= 126):
             string += chr(n)
     print(string)
-    
+    radio.writeAckPayload(0, [1], 1)

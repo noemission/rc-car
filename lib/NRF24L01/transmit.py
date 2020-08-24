@@ -20,11 +20,19 @@ radio.enableDynamicPayloads()
 radio.enableAckPayload()
 
 radio.openWritingPipe(pipes[1])
+radio.openReadingPipe(1, pipes[0])
 #radio.printDetails()
+millis = lambda: int(round(time.time() * 1000))
 
 while(1):
-    data = input()
+    radio.stopListening()
+    data = input().split('-')
+    id = data[0]
     message = list(data)
     radio.write(message)
-    #print("We sent the message of {}".format(message))
-    #time.sleep(1)
+
+    if radio.isAckPayloadAvailable():
+        print (id + "-1")
+    else:
+        print (id + "-0")
+
