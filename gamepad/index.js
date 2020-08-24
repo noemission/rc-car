@@ -16,6 +16,8 @@ var throttledHandleMovement = throttle(handleMovement, 16 * 3);
 
 const handleSteering = (value) => {
     value = Math.round((value - 0.1) * 10) / 10
+    if(value > 1) value = 1
+    if(value < -1) value = -1
     console.log('X_AXIS', value)
     send('X' + value)
 }
