@@ -26,14 +26,14 @@ millis = lambda: int(round(time.time() * 1000))
 
 while(1):
     radio.stopListening()
-    data = input().split('-')
+    data = input().split(',')
     id = data[0]
     message = list(data[1])
     radio.write(message)
 
     if radio.isAckPayloadAvailable():
-        print (id + "-1")
+        print (id + ",1")
     else:
-        print (id + "-0")
+        print (id + ",0")
 
     
