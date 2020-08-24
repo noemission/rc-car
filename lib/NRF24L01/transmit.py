@@ -11,9 +11,9 @@ pipes = [[0xb4, 0xb4, 0xb4, 0xb4, 0xb4], [0xd2, 0xd2, 0xd2, 0xd2, 0xd2]]
 radio = NRF24(GPIO, spidev.SpiDev())
 radio.begin(0, 17)
 radio.setPayloadSize(32)
-radio.setChannel(0x61)
+radio.setChannel(0x70)
 
-radio.setDataRate(NRF24.BR_250KBPS)
+radio.setDataRate(NRF24.BR_1MBPS)
 radio.setPALevel(NRF24.PA_MAX)
 radio.setAutoAck(True)
 radio.enableDynamicPayloads()
