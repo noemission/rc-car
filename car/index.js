@@ -60,8 +60,18 @@ const beep = () => {
 const startBeep = () => {
     beepInterval = setInterval(beep, 750)
 }
-
 const stopBeep = () => clearInterval(beepInterval);
+
+let lastHeartBeat;
+const handleHeartBeat = () => {
+    lastHeartBeat = Date.now();
+    stopBeep();
+    setTimeout(() => {
+        if(Date.now() - lastHeartBeat > 3000){
+            startBeep();
+        }
+    },3000)
+}
 
 const setThrottle = (throttle) => {
     if (throttle > maxThrottle) {
@@ -77,6 +87,9 @@ receiver.onMessage((msg) => {
     console.log(msg)
     if(msg === "SHUTDOWN"){
         return shell.exec('/sbin/shutdown -h now');
+    }
+    if(msg === "HEARTBEAT"){
+        handleHeartBeat()
     }
     let axis = msg.charAt(0);
     let value = parseFloat(msg.slice(1))
@@ -100,3 +113,4 @@ process.on('SIGINT', function () {
     process.exit()
 });
 
+handleHeartBeat()
