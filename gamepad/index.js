@@ -15,8 +15,8 @@ const handleMovement = (value) => {
 var throttledHandleMovement = throttle(handleMovement, 16 * 3);
 
 const handleSteering = (value) => {
-    if(value < 0) value = value + 0.1
-    else if(value > 0) value = value - 0.1
+    if(value < 0 && value > -0.5) value = value + 0.1
+    else if(value > 0 && value < 0.5) value = value - 0.1
     value = Math.round((value) * 10) / 10
     if(value > 1) value = 1
     if(value < -1) value = -1
