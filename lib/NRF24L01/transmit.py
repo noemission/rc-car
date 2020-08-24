@@ -31,8 +31,29 @@ while(1):
     message = list(data[1])
     radio.write(message)
 
-    if radio.isAckPayloadAvailable():
-        print (id + "-1")
-    else:
-        print (id + "-0")
+    # if radio.isAckPayloadAvailable():
+    #     print (id + "-1")
+    # else:
+    #     print (id + "-0")
 
+    started_waiting_at = millis()
+    timeout = False
+    while (not radio.available()) and (not timeout):
+        if (millis() - started_waiting_at) > 5000:
+            timeout = True
+
+        # Describe the results
+    if timeout:
+        print('failed, response timed out.')
+    else:
+        # Grab the response, compare, and send to debugging spew
+        len = radio.getDynamicPayloadSize()
+        print(len)
+        receivedMessage = []
+        radio.read(receivedMessage, radio.getDynamicPayloadSize())
+
+        message = map(lambda c: chr(c), receivedMessage)
+        # Spew it
+        print(''.join(message))
+    #print("We sent the message of {}".format(message))
+    #time.sleep(1)
