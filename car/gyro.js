@@ -11,20 +11,22 @@ module.exports = class Gyro{
         this.sensor = new MPU6050(i2c1, address);
         const samples = 50
         this.offsetG = 0;
-        for (let i = 0; index < samples; i++) {
+        for (let i = 0; i < samples; i++) {
             const { gyro : { z } } = this.sensor.readSync();
             this.offsetG+= z
         }
-        this.offsetG /= sample;
+        this.offsetG /= samples;
+	console.log(this.offsetG)
     }
     onData(cb){
         const read = () => {
-            sensor.read((err, data) => {
+            this.sensor.read((err, data) => {
                 if (err) throw err;
-                setImmediate(read)
-                cb(data.gyro.z - this.offsetG)
-            })
+                setImmediate( () => read())
+                cb( (data.gyro.z - this.offsetG) * 0.030516)
+            });
         }
+	read();
     }
 
 }

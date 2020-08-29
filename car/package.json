@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "i2c-bus": "^5.2.0",
+    "i2c-mpu6050": "^2.3.0",
     "pigpio": "^3.2.3",
     "python-shell": "^2.0.1",
     "shelljs": "^0.8.4",
