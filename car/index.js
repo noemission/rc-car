@@ -1,9 +1,12 @@
 const shell = require('shelljs');
 const Gpio = require('pigpio').Gpio;
 const { Receiver } = require('../lib/NRF24L01/index.js')
+const Gyro = require('./gyro.js')
+
+const gyro = new Gyro();
 
 const receiver = new Receiver()
-
+const gyroHelp = true;
 const motor = new Gpio(13, { mode: Gpio.OUTPUT });
 const servo = new Gpio(12, { mode: Gpio.OUTPUT });
 
@@ -42,6 +45,8 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 handleLights();
 let beepInterval;
 let beeping = false;
+let userSteering = 1500
+let userThrottle = 1500
 motor.servoWrite(1500)
 servo.servoWrite(1500)
 
@@ -99,17 +104,41 @@ receiver.onMessage((msg) => {
     let axis = msg.charAt(0);
     let value = parseFloat(msg.slice(1))
     if (axis === 'X') {
-        const steering = Math.floor(1500 + (value * 1000))
-        servo.servoWrite(steering)
-        console.log(steering);
+        // steering: 500 - 2500
+        userSteering = Math.floor(1500 + (value * 1000))
+        servo.servoWrite(userSteering)
+        console.log(userSteering);
     } else if (axis === 'Y') {
         const throttle = Math.floor(1500 + (value * 1000))
+	userThrottle = throttle;
         setThrottle(throttle)
     } else if (axis === 'L') {
         lightsLevel = lightsLevel >= 3 ? 0 : lightsLevel + 1
         handleLights();
     }
 })
+const map = (value, x1, y1, x2, y2) => (value - x1) * (y2 - x2) / (y1 - x1) + x2;
+
+
+gyro.onData((z) => {
+    if(!gyroHelp) return;
+    const realSteering = map(z * -1 ,-5,5,500,2500);
+    let steering = userSteering
+    let correction = parseInt(Math.abs(realSteering - steering))
+    if(realSteering < steering){
+        steering += correction 
+    }else{
+        steering -= correction 
+    }
+    steering = parseInt(steering);
+    if(steering > 2500) steering = 2500;
+    else if(steering < 500) steering = 500;
+    // console.log('realsteering %d newSteering %d correction %d userSteering',realSteering, steering, correction, userSteering)
+    servo.servoWrite(steering)
+
+})
+
+
 process.on('SIGINT', function () {
     led1.digitalWrite(0);
     led2.digitalWrite(0);
