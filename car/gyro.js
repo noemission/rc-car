@@ -9,7 +9,7 @@ var i2c1 = i2c.openSync(1);
 module.exports = class Gyro{
     constructor(){
         this.sensor = new MPU6050(i2c1, address);
-        const samples = 50
+        const samples = 1000
         this.offsetG = 0;
         for (let i = 0; i < samples; i++) {
             const { gyro : { z } } = this.sensor.readSync();
