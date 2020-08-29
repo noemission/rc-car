@@ -5,9 +5,7 @@ const Gyro = require('./gyro.js')
 
 const gyro = new Gyro();
 
-gyro.onData((z) => {
-    console.log(z)
-})
+
 
 const receiver = new Receiver()
 
@@ -49,8 +47,9 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 handleLights();
 let beepInterval;
 let beeping = false;
+let steering = 1500
 motor.servoWrite(1500)
-servo.servoWrite(1500)
+servo.servoWrite(steering)
 
 const maxThrottle = 2300
 const minThrottle = 625
@@ -106,7 +105,8 @@ receiver.onMessage((msg) => {
     let axis = msg.charAt(0);
     let value = parseFloat(msg.slice(1))
     if (axis === 'X') {
-        const steering = Math.floor(1500 + (value * 1000))
+        // steering: 500 - 2500
+        steering = Math.floor(1500 + (value * 1000))
         servo.servoWrite(steering)
         console.log(steering);
     } else if (axis === 'Y') {
@@ -117,6 +117,25 @@ receiver.onMessage((msg) => {
         handleLights();
     }
 })
+const map = (value, x1, y1, x2, y2) => (value - x1) * (y2 - x2) / (y1 - x1) + x2;
+
+
+gyro.onData((z) => {
+    const realSteering = map(z,-5,5,500,2500);
+    const correction = Math.abs(realSteering - steering)
+    if(realSteering < steering){
+        steering += correction
+    }else{
+        steering -= correction
+    }
+    if(steering > 2500) steering = 2500;
+    else if(steering < 500) steering = 500;
+
+    servo.servoWrite(steering)
+
+})
+
+
 process.on('SIGINT', function () {
     led1.digitalWrite(0);
     led2.digitalWrite(0);
