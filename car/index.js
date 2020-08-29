@@ -1,6 +1,13 @@
 const shell = require('shelljs');
 const Gpio = require('pigpio').Gpio;
 const { Receiver } = require('../lib/NRF24L01/index.js')
+const Gyro = require('./gyro.js')
+
+const gyro = new Gyro();
+
+gyro.onData((z) => {
+    console.log(z)
+})
 
 const receiver = new Receiver()
 
