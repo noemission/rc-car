@@ -63,6 +63,8 @@ Gamepad.on("up", function (id, num) {
         setTimeout(() => {
             shell.exec('/sbin/shutdown -h now');
         }, 2000);
+    }else if(shutdownSequence.join() === '0,0,1,1'){
+        send("ESP")
     }
     console.log(shutdownSequence)
 });
