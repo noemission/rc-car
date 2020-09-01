@@ -6,7 +6,7 @@ const Gyro = require('./gyro.js')
 const gyro = new Gyro();
 
 const receiver = new Receiver()
-const gyroHelp = true;
+let gyroHelp = true;
 const motor = new Gpio(13, { mode: Gpio.OUTPUT });
 const servo = new Gpio(12, { mode: Gpio.OUTPUT });
 
@@ -99,7 +99,11 @@ receiver.onMessage((msg) => {
         return shell.exec('/sbin/shutdown -h now');
     }
     if(msg === "HEARTBEAT"){
-        handleHeartBeat()
+        return handleHeartBeat()
+    }
+    if(msg === "ESP"){
+       gyroHelp = !gyroHelp;
+       return;
     }
     let axis = msg.charAt(0);
     let value = parseFloat(msg.slice(1))
