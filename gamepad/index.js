@@ -9,6 +9,7 @@ const send = sender.send.bind(sender);
 let speedFactor = 0.2;
 
 const handleMovement = (value) => {
+    value *= -1
     console.log('Y_AXIS', value)
     send('Y' + value)
 }
@@ -17,10 +18,10 @@ const map = (value, x1, y1, x2, y2) => (value - x1) * (y2 - x2) / (y1 - x1) + x2
 
 
 const handleSteering = (value) => {
-    value = map(value,-1,1,-0.5,0.5) * 10
-    value = Math.floor(value) / 10 * 2
-    if(value > 1) value = 1
-    if(value < -1) value = -1
+//    value = map(value,-1,1,-0.5,0.5) * 10
+//    value = Math.floor(value) / 10 * 2
+//    if(value > 1) value = 1
+//    if(value < -1) value = -1
     console.log('X_AXIS', value)
     send('X' + value)
 }
@@ -31,7 +32,10 @@ Gamepad.on("move", function (id, axis, value) {
         value = parseFloat(((value)).toFixed(2));
         throttledHandleSteering(value)
     } else if (axis === 3) {
-        value = parseFloat(((value * speedFactor)).toFixed(2));
+        if(value > 0)
+	        value = parseFloat(((value)).toFixed(2));
+	else
+		value = parseFloat(((value * speedFactor)).toFixed(2));
         throttledHandleMovement(value)
     }
 });
