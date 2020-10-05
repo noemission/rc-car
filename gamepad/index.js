@@ -20,7 +20,7 @@ const map = (value, x1, y1, x2, y2) => (value - x1) * (y2 - x2) / (y1 - x1) + x2
 const handleSteering = (value) => {
 //    value = map(value,-1,1,-0.5,0.5) * 10
 //    value = Math.floor(value) / 10 * 2
-//    if(value > 1) value = 1
+    if(value >= -0.2 && value <= 0.2) value = 0
 //    if(value < -1) value = -1
     console.log('X_AXIS', value)
     send('X' + value)
